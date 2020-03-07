@@ -1579,6 +1579,21 @@
 		},
 		"/My_settings.h.Q32571": {
 			"sdcard": false
+		},
+		"/table2.dat": {
+			"sdcard": false
+		},
+		"/README.md.Z32571": {
+			"sdcard": false
+		},
+		"/README.md": {
+			"sdcard": false
+		},
+		"/test.dat": {
+			"sdcard": false
+		},
+		"/README.md.m32571": {
+			"sdcard": false
 		}
 	}
 }

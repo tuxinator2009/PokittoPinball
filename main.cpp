@@ -82,7 +82,7 @@ int main()
 	PD::persistence = true;
 	Pokitto::lcdPrepareRefresh();
 	file = new File();
-	file->openRO("/pokiball/table2.dat");
+	file->openRO("/pinball/test.dat");
 	memset(scanline, 0, 220);
 	memset(scanlinesDirty, 0xFF, 22);
 	previousTime = currentTime = PC::getTime();

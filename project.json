@@ -1,0 +1,1572 @@
+{
+	"lastBuffer": "main.cpp",
+	"PNGFlags": {
+		"ALL": [
+			"palette=${appPath}/PokittoLib/Pokitto/POKITTO_CORE/PALETTES/palDB16.cpp"
+		]
+	},
+	"libs": {
+		"Pokitto": [
+			{
+				"recurse": "${appPath}/PokittoLib/Pokitto",
+				"ignore": "POKITTO_SIM|POKITTO_XTERNALS|Documentation|examples?|Physics|(?:.*_SIM.*)|main.cpp"
+			}
+		]
+	},
+	"SFlags": {
+		"Pokitto": [
+			"-I${projectPath}",
+			"-mcpu=cortex-m0plus",
+			"-mthumb"
+		]
+	},
+	"CPPFlags": {
+		"DEBUG": [
+			"-Og",
+			"-g3",
+			"-ggdb"
+		],
+		"RELEASE": [
+			"-O3"
+		],
+		"Pokitto": [
+			"-D_OSCT=2",
+			"-I${projectPath}",
+			"-DPOKITTO",
+			"-fno-rtti",
+			"-Wno-pointer-arith",
+			"-c",
+			"-fno-exceptions",
+			"-fno-builtin",
+			"-ffunction-sections",
+			"-fdata-sections",
+			"-funsigned-char",
+			"-MMD",
+			"-fno-delete-null-pointer-checks",
+			"-fomit-frame-pointer",
+			"-mcpu=cortex-m0plus",
+			"-mthumb",
+			"-Wno-psabi",
+			"-Wno-conversion-null",
+			"-Wno-narrowing",
+			"-Wno-write-strings",
+			"-DTARGET_LPC11U68",
+			"-D__MBED__=1",
+			"-DDEVICE_I2CSLAVE=1",
+			"-DTARGET_LIKE_MBED",
+			"-DTARGET_NXP",
+			"-D__MBED_CMSIS_RTOS_CM",
+			"-DDEVICE_RTC=1",
+			"-DTOOLCHAIN_object",
+			"-D__CMSIS_RTOS",
+			"-DTOOLCHAIN_GCC",
+			"-DTARGET_CORTEX_M",
+			"-DTARGET_M0P",
+			"-DTARGET_UVISOR_UNSUPPORTED",
+			"-DDEVICE_SERIAL=1",
+			"-DDEVICE_INTERRUPTIN=1",
+			"-DTARGET_LPCTarget",
+			"-DTARGET_CORTEX",
+			"-DDEVICE_I2C=1",
+			"-D__CORTEX_M0PLUS",
+			"-DTARGET_FF_ARDUINO",
+			"-DTARGET_RELEASE",
+			"-DMBED_BUILD_TIMESTAMP=1526394586.66",
+			"-DARM_MATH_CM0PLUS",
+			"-DTARGET_LPC11U6X",
+			"-DDEVICE_SLEEP=1",
+			"-DTOOLCHAIN_GCC_ARM",
+			"-DDEVICE_SPI=1",
+			"-DDEVICE_ANALOGIN=1",
+			"-DDEVICE_PWMOUT=1",
+			"-DTARGET_LIKE_CORTEX_M0"
+		],
+		"Desktop": [
+			"-I${projectPath}",
+			"-DDESKTOP",
+			"-fno-rtti",
+			"-Wno-pointer-arith",
+			"-c",
+			"-fno-exceptions",
+			"-fno-builtin",
+			"-ffunction-sections",
+			"-fdata-sections",
+			"-funsigned-char",
+			"-MMD",
+			"-fno-delete-null-pointer-checks"
+		],
+		"ALL": [
+			"-std=c++17"
+		]
+	},
+	"CFlags": {
+		"DEBUG": [
+			"-Og",
+			"-g3",
+			"-ggdb"
+		],
+		"RELEASE": [
+			"-O3"
+		],
+		"Pokitto": [
+			"-D_OSCT=2",
+			"-I${projectPath}",
+			"-DPOKITTO",
+			"-Wno-pointer-arith",
+			"-c",
+			"-fno-exceptions",
+			"-fno-builtin",
+			"-ffunction-sections",
+			"-fdata-sections",
+			"-funsigned-char",
+			"-MMD",
+			"-fno-delete-null-pointer-checks",
+			"-fomit-frame-pointer",
+			"-mcpu=cortex-m0plus",
+			"-mthumb",
+			"-Wno-psabi",
+			"-Wwrite-strings",
+			"-DTARGET_LPC11U68",
+			"-D__MBED__=1",
+			"-DDEVICE_I2CSLAVE=1",
+			"-DTARGET_LIKE_MBED",
+			"-DTARGET_NXP",
+			"-D__MBED_CMSIS_RTOS_CM",
+			"-DDEVICE_RTC=1",
+			"-DTOOLCHAIN_object",
+			"-D__CMSIS_RTOS",
+			"-DTOOLCHAIN_GCC",
+			"-DTARGET_CORTEX_M",
+			"-DTARGET_M0P",
+			"-DTARGET_UVISOR_UNSUPPORTED",
+			"-DDEVICE_SERIAL=1",
+			"-DDEVICE_INTERRUPTIN=1",
+			"-DTARGET_LPCTarget",
+			"-DTARGET_CORTEX",
+			"-DDEVICE_I2C=1",
+			"-D__CORTEX_M0PLUS",
+			"-DTARGET_FF_ARDUINO",
+			"-DTARGET_RELEASE",
+			"-DMBED_BUILD_TIMESTAMP=1526394586.66",
+			"-DARM_MATH_CM0PLUS",
+			"-DTARGET_LPC11U6X",
+			"-DDEVICE_SLEEP=1",
+			"-DTOOLCHAIN_GCC_ARM",
+			"-DDEVICE_SPI=1",
+			"-DDEVICE_ANALOGIN=1",
+			"-DDEVICE_PWMOUT=1",
+			"-DTARGET_LIKE_CORTEX_M0"
+		],
+		"Desktop": [
+			"-I${projectPath}",
+			"-DDESKTOP",
+			"-fno-rtti",
+			"-Wno-pointer-arith",
+			"-c",
+			"-fno-exceptions",
+			"-fno-builtin",
+			"-ffunction-sections",
+			"-fdata-sections",
+			"-funsigned-char",
+			"-MMD",
+			"-fno-delete-null-pointer-checks"
+		],
+		"ALL": []
+	},
+	"GDBFlags": {
+		"Pokitto": [
+			"${projectPath}/${projectName}.elf"
+		]
+	},
+	"emuFlags": {
+		"Pokitto": [
+			"${projectPath}/${projectName}.bin",
+			"-I",
+			"${appPath}/../realSD.img"
+		]
+	},
+	"ELF2BINFlags": {
+		"Pokitto": [
+			"-O",
+			"binary",
+			"${projectPath}/${projectName}.elf",
+			"${projectPath}/${projectName}.bin"
+		]
+	},
+	"LDFlags": {
+		"RELEASE": [
+			"-O3"
+		],
+		"DEBUG": [
+			"-Og",
+			"-g3",
+			"-ggdb"
+		],
+		"Pokitto": [
+			"-Wl,--gc-sections",
+			"-Wl,-n",
+			"--specs=nano.specs",
+			"-mcpu=cortex-m0plus",
+			"-mthumb",
+			"-Wl,--undefined=g_pfnVectors",
+			"-Wl,--undefined=boot",
+			"-T",
+			"${appPath}/PokittoLib/Pokitto/mbed-pokitto/targets/cmsis/TARGET_NXP/TARGET_LPC11U6X/TOOLCHAIN_GCC_ARM/TARGET_LPC11U68/LPC11U68.ld",
+			"--output",
+			"${projectPath}/${projectName}.elf",
+			"$objectFiles",
+			"-Wl,--start-group",
+			"-lstdc++",
+			"-lsupc++",
+			"-lm",
+			"-lc",
+			"-lgcc",
+			"-lnosys",
+			"-Wl,--end-group"
+		]
+	},
+	"target": "Pokitto",
+	"pipelines": {
+		"Pokitto": [
+			"img-to-c",
+			"compile-cpp",
+			"compile-ld",
+			"compile-bin",
+			"make-img"
+		],
+		"Desktop": [
+			"compile-cpp",
+			"compile-ld",
+			"compile-bin"
+		]
+	},
+	"meta": {
+		"": {},
+		"/Bacon.png": {
+			"sdcard": false
+		},
+		"/Hello CPP.bin": {
+			"sdcard": false
+		},
+		"/File.cpp": {
+			"sdcard": false
+		},
+		"/Hello CPP.elf": {
+			"sdcard": false
+		},
+		"/My_settings.h": {
+			"sdcard": false
+		},
+		"/Smile.h": {
+			"sdcard": false
+		},
+		"/Smile.png": {
+			"sdcard": false
+		},
+		"/Test.h": {
+			"sdcard": false
+		},
+		"/Test.png": {
+			"sdcard": true
+		},
+		"/main.cpp": {
+			"sdcard": false
+		},
+		"/project.json": {
+			"sdcard": false
+		},
+		"/gfx": {
+			"sdcard": false
+		},
+		"/gfx/blocks.png.Hk4923": {
+			"sdcard": false
+		},
+		"/gfx/blocks.png": {
+			"sdcard": false
+		},
+		"/gfx/blocks_16x16.png.cS5573": {
+			"sdcard": false
+		},
+		"/gfx/blocks_16x16.png": {
+			"sdcard": false
+		},
+		"/My_settings.h.Hf1857": {
+			"sdcard": false
+		},
+		"/My_settings.h.yJ1857": {
+			"sdcard": false
+		},
+		"/gfx.h.wX1857": {
+			"sdcard": false
+		},
+		"/gfx.h": {
+			"sdcard": false
+		},
+		"/gfx.h.Zb1857": {
+			"sdcard": false
+		},
+		"/gfx.h.th1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ZK1857": {
+			"sdcard": false
+		},
+		"/gfx/blocks_16x16.png.AD5573": {
+			"sdcard": false
+		},
+		"/main.cpp.ab1857": {
+			"sdcard": false
+		},
+		"/main.cpp.VE1857": {
+			"sdcard": false
+		},
+		"/main.cpp.qq1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Sa1857": {
+			"sdcard": false
+		},
+		"/gfx/blocks_16x16.png.oN5573": {
+			"sdcard": false
+		},
+		"/gfx/blocks_16x16.png.UV5573": {
+			"sdcard": false
+		},
+		"/gfx/blocks_16x16.png.xe5573": {
+			"sdcard": false
+		},
+		"/main.cpp.sc1857": {
+			"sdcard": false
+		},
+		"/main.cpp.FV1857": {
+			"sdcard": false
+		},
+		"/main.cpp.hc1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Qb1857": {
+			"sdcard": false
+		},
+		"/main.cpp.nt1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Sm1857": {
+			"sdcard": false
+		},
+		"/main.cpp.jG1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Ds1857": {
+			"sdcard": false
+		},
+		"/gfx.h.rA1857": {
+			"sdcard": false
+		},
+		"/gfx.h.xv1857": {
+			"sdcard": false
+		},
+		"/gfx.h.Wl1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Vr1857": {
+			"sdcard": false
+		},
+		"/main.cpp.cH1857": {
+			"sdcard": false
+		},
+		"/gfx.h.Nb1857": {
+			"sdcard": false
+		},
+		"/gfx.h.fo1857": {
+			"sdcard": false
+		},
+		"/gfx.h.uI1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Vd1857": {
+			"sdcard": false
+		},
+		"/main.cpp.zU1857": {
+			"sdcard": false
+		},
+		"/main.cpp.EG1857": {
+			"sdcard": false
+		},
+		"/main.cpp.eJ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Kx1857": {
+			"sdcard": false
+		},
+		"/main.cpp.NA1857": {
+			"sdcard": false
+		},
+		"/main.cpp.zm1857": {
+			"sdcard": false
+		},
+		"/main.cpp.DB1857": {
+			"sdcard": false
+		},
+		"/main.cpp.rw1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ZW1857": {
+			"sdcard": false
+		},
+		"/main.cpp.lH1857": {
+			"sdcard": false
+		},
+		"/main.cpp.cl1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Mr1857": {
+			"sdcard": false
+		},
+		"/main.cpp.VY1857": {
+			"sdcard": false
+		},
+		"/gfx/blocks.h": {
+			"sdcard": false
+		},
+		"/gfx/blocks_16x16.h": {
+			"sdcard": false
+		},
+		"/gfx.h.RE1857": {
+			"sdcard": false
+		},
+		"/gfx.h.jk1857": {
+			"sdcard": false
+		},
+		"/TetrisAttackClone.elf": {
+			"sdcard": false
+		},
+		"/TetrisAttackClone.bin": {
+			"sdcard": false
+		},
+		"/main.cpp.Et1857": {
+			"sdcard": false
+		},
+		"/main.cpp.oB1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ju1857": {
+			"sdcard": false
+		},
+		"/main.cpp.eD1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Ss1857": {
+			"sdcard": false
+		},
+		"/main.cpp.hK1857": {
+			"sdcard": false
+		},
+		"/main.cpp.pN1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Ny1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Uw1857": {
+			"sdcard": false
+		},
+		"/main.cpp.yV1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Jw1857": {
+			"sdcard": false
+		},
+		"/main.cpp.PR1857": {
+			"sdcard": false
+		},
+		"/main.cpp.nT1857": {
+			"sdcard": false
+		},
+		"/main.cpp.uF1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Vm1857": {
+			"sdcard": false
+		},
+		"/main.cpp.BQ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Jy1857": {
+			"sdcard": false
+		},
+		"/main.cpp.XT1857": {
+			"sdcard": false
+		},
+		"/main.cpp.xJ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Gw1857": {
+			"sdcard": false
+		},
+		"/main.cpp.jL1857": {
+			"sdcard": false
+		},
+		"/main.cpp.CO1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Iv1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Fv1857": {
+			"sdcard": false
+		},
+		"/main.cpp.wS1857": {
+			"sdcard": false
+		},
+		"/main.cpp.KB1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Yk1857": {
+			"sdcard": false
+		},
+		"/main.cpp.pw1857": {
+			"sdcard": false
+		},
+		"/main.cpp.XV1857": {
+			"sdcard": false
+		},
+		"/main.cpp.IA1857": {
+			"sdcard": false
+		},
+		"/main.cpp.iR1857": {
+			"sdcard": false
+		},
+		"/main.cpp.cN1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Jv1857": {
+			"sdcard": false
+		},
+		"/main.cpp.qH1857": {
+			"sdcard": false
+		},
+		"/main.cpp.eo1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Gm1857": {
+			"sdcard": false
+		},
+		"/main.cpp.NY1857": {
+			"sdcard": false
+		},
+		"/main.cpp.PS1857": {
+			"sdcard": false
+		},
+		"/main.cpp.jt1857": {
+			"sdcard": false
+		},
+		"/main.cpp.xD1857": {
+			"sdcard": false
+		},
+		"/main.cpp.FG1857": {
+			"sdcard": false
+		},
+		"/main.cpp.CD1857": {
+			"sdcard": false
+		},
+		"/main.cpp.gc1857": {
+			"sdcard": false
+		},
+		"/main.cpp.QG1857": {
+			"sdcard": false
+		},
+		"/main.cpp.XD1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ke1857": {
+			"sdcard": false
+		},
+		"/main.cpp.GV1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Di1857": {
+			"sdcard": false
+		},
+		"/main.cpp.br1857": {
+			"sdcard": false
+		},
+		"/My_settings.h.tn1857": {
+			"sdcard": false
+		},
+		"/My_settings.h.yx1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Na1857": {
+			"sdcard": false
+		},
+		"/My_settings.h.nX1857": {
+			"sdcard": false
+		},
+		"/My_settings.h.DS1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Bu1857": {
+			"sdcard": false
+		},
+		"/My_settings.h.eo1857": {
+			"sdcard": false
+		},
+		"/main.cpp.kL1857": {
+			"sdcard": false
+		},
+		"/My_settings.h.mj1857": {
+			"sdcard": false
+		},
+		"/My_settings.h.LE1857": {
+			"sdcard": false
+		},
+		"/My_settings.h.QB1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ym1857": {
+			"sdcard": false
+		},
+		"/main.cpp.zg1857": {
+			"sdcard": false
+		},
+		"/main.cpp.IZ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Yd1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Fm1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Bb1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ZQ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.TN1857": {
+			"sdcard": false
+		},
+		"/main.cpp.hU1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ck1857": {
+			"sdcard": false
+		},
+		"/main.cpp.fH1857": {
+			"sdcard": false
+		},
+		"/main.cpp.dC1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Zc1857": {
+			"sdcard": false
+		},
+		"/main.cpp.uU1857": {
+			"sdcard": false
+		},
+		"/main.cpp.EN1857": {
+			"sdcard": false
+		},
+		"/main.cpp.VB1857": {
+			"sdcard": false
+		},
+		"/main.cpp.An1857": {
+			"sdcard": false
+		},
+		"/main.cpp.iU1857": {
+			"sdcard": false
+		},
+		"/main.cpp.nQ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.wv1857": {
+			"sdcard": false
+		},
+		"/TetrisAttackClone.bin.1.png": {
+			"sdcard": false
+		},
+		"/main.cpp.AP1857": {
+			"sdcard": false
+		},
+		"/TetrisAttackClone.bin.1.h": {
+			"sdcard": false
+		},
+		"/main.cpp.Xx1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Vu1857": {
+			"sdcard": false
+		},
+		"/main.cpp.UR1857": {
+			"sdcard": false
+		},
+		"/main.cpp.US1857": {
+			"sdcard": false
+		},
+		"/main.cpp.xx1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Xg1857": {
+			"sdcard": false
+		},
+		"/main.cpp.mp1857": {
+			"sdcard": false
+		},
+		"/main.cpp.vg1857": {
+			"sdcard": false
+		},
+		"/main.cpp.wY1857": {
+			"sdcard": false
+		},
+		"/main.cpp.mK1857": {
+			"sdcard": false
+		},
+		"/main.cpp.wb1857": {
+			"sdcard": false
+		},
+		"/main.cpp.EU1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Hk1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Vw1857": {
+			"sdcard": false
+		},
+		"/main.cpp.LR1857": {
+			"sdcard": false
+		},
+		"/main.cpp.AD1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ew1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ya1857": {
+			"sdcard": false
+		},
+		"/main.cpp.aL1857": {
+			"sdcard": false
+		},
+		"/main.cpp.al1857": {
+			"sdcard": false
+		},
+		"/main.cpp.JN1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Sy1857": {
+			"sdcard": false
+		},
+		"/main.cpp.mz1857": {
+			"sdcard": false
+		},
+		"/main.cpp.qR1857": {
+			"sdcard": false
+		},
+		"/main.cpp.HQ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.sR1857": {
+			"sdcard": false
+		},
+		"/main.cpp.AH1857": {
+			"sdcard": false
+		},
+		"/main.cpp.pJ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Pu1857": {
+			"sdcard": false
+		},
+		"/main.cpp.uC1857": {
+			"sdcard": false
+		},
+		"/main.cpp.yy1857": {
+			"sdcard": false
+		},
+		"/main.cpp.jk1857": {
+			"sdcard": false
+		},
+		"/main.cpp.GM1857": {
+			"sdcard": false
+		},
+		"/main.cpp.wO1857": {
+			"sdcard": false
+		},
+		"/main.cpp.mj1857": {
+			"sdcard": false
+		},
+		"/main.cpp.yH1857": {
+			"sdcard": false
+		},
+		"/main.cpp.qP1857": {
+			"sdcard": false
+		},
+		"/main.cpp.fl1857": {
+			"sdcard": false
+		},
+		"/main.cpp.NZ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Qt1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Jp1857": {
+			"sdcard": false
+		},
+		"/main.cpp.sL1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ac1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Bn1857": {
+			"sdcard": false
+		},
+		"/main.cpp.le1857": {
+			"sdcard": false
+		},
+		"/main.cpp.yY1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Yr1857": {
+			"sdcard": false
+		},
+		"/main.cpp.MJ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ss1857": {
+			"sdcard": false
+		},
+		"/main.cpp.rB1857": {
+			"sdcard": false
+		},
+		"/main.cpp.rU1857": {
+			"sdcard": false
+		},
+		"/main.cpp.YN1857": {
+			"sdcard": false
+		},
+		"/main.cpp.YL1857": {
+			"sdcard": false
+		},
+		"/main.cpp.yD1857": {
+			"sdcard": false
+		},
+		"/main.cpp.BL1857": {
+			"sdcard": false
+		},
+		"/main.cpp.AF1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Rj1857": {
+			"sdcard": false
+		},
+		"/main.cpp.yg1857": {
+			"sdcard": false
+		},
+		"/main.cpp.da1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Fs1857": {
+			"sdcard": false
+		},
+		"/main.cpp.CQ1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Ba1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ee1857": {
+			"sdcard": false
+		},
+		"/main.cpp.kA1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Hb1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Ls1857": {
+			"sdcard": false
+		},
+		"/main.cpp.mA1857": {
+			"sdcard": false
+		},
+		"/main.cpp.ci1857": {
+			"sdcard": false
+		},
+		"/main.cpp.vl1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Nn1857": {
+			"sdcard": false
+		},
+		"/main.cpp.kq1857": {
+			"sdcard": false
+		},
+		"/main.cpp.CG1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Rs1857": {
+			"sdcard": false
+		},
+		"/main.cpp.Om1857": {
+			"sdcard": false
+		},
+		"/main.cpp.wA1857": {
+			"sdcard": false
+		},
+		"/main.cpp.n32571": {
+			"sdcard": false
+		},
+		"/main.cpp.k32571": {
+			"sdcard": false
+		},
+		"/main.cpp.i32571": {
+			"sdcard": false
+		},
+		"/main.cpp.T32571": {
+			"sdcard": false
+		},
+		"/main.cpp.Z32571": {
+			"sdcard": false
+		},
+		"/main.cpp.w32571": {
+			"sdcard": false
+		},
+		"/main.cpp.d32571": {
+			"sdcard": false
+		},
+		"/main.cpp.j32571": {
+			"sdcard": false
+		},
+		"/main.cpp.C32571": {
+			"sdcard": false
+		},
+		"/main.cpp.B32571": {
+			"sdcard": false
+		},
+		"/main.cpp.f32571": {
+			"sdcard": false
+		},
+		"/main.cpp.H32571": {
+			"sdcard": false
+		},
+		"/main.cpp.J32571": {
+			"sdcard": false
+		},
+		"/main.cpp.y32571": {
+			"sdcard": false
+		},
+		"/main.cpp.W32571": {
+			"sdcard": false
+		},
+		"/main.cpp.F32571": {
+			"sdcard": false
+		},
+		"/main.cpp.X32571": {
+			"sdcard": false
+		},
+		"/main.cpp.b32571": {
+			"sdcard": false
+		},
+		"/main.cpp.h32571": {
+			"sdcard": false
+		},
+		"/main.cpp.t32571": {
+			"sdcard": false
+		},
+		"/main.cpp.x32571": {
+			"sdcard": false
+		},
+		"/gfx.h.L32571": {
+			"sdcard": false
+		},
+		"/gfx.h.x32571": {
+			"sdcard": false
+		},
+		"/main.cpp.V32571": {
+			"sdcard": false
+		},
+		"/main.cpp.c32571": {
+			"sdcard": false
+		},
+		"/main.cpp.N32571": {
+			"sdcard": false
+		},
+		"/main.cpp.o32571": {
+			"sdcard": false
+		},
+		"/main.cpp.I32571": {
+			"sdcard": false
+		},
+		"/main.cpp.u32571": {
+			"sdcard": false
+		},
+		"/main.cpp.U32571": {
+			"sdcard": false
+		},
+		"/gfx/blocks_16x16.png.Qa7945": {
+			"sdcard": false
+		},
+		"/gfx/cursor.png.xS7945": {
+			"sdcard": false
+		},
+		"/gfx/cursor.png": {
+			"sdcard": false
+		},
+		"/gfx/garbage_grey.png.yk7945": {
+			"sdcard": false
+		},
+		"/gfx/garbage_grey.png": {
+			"sdcard": false
+		},
+		"/gfx/garbage_red.png.BC7945": {
+			"sdcard": false
+		},
+		"/gfx/garbage_red.png": {
+			"sdcard": false
+		},
+		"/gfx/garbage_blue.png.Vy7945": {
+			"sdcard": false
+		},
+		"/gfx/garbage_blue.png": {
+			"sdcard": false
+		},
+		"/TetrisAttackClone.bin.1.png.eU7945": {
+			"sdcard": false
+		},
+		"/main.cpp.z32571": {
+			"sdcard": false
+		},
+		"/gfx/cursor.h": {
+			"sdcard": false
+		},
+		"/gfx/garbage_grey.h": {
+			"sdcard": false
+		},
+		"/gfx/garbage_blue.h": {
+			"sdcard": false
+		},
+		"/gfx/garbage_red.h": {
+			"sdcard": false
+		},
+		"/main.cpp.G32571": {
+			"sdcard": false
+		},
+		"/main.cpp.E32571": {
+			"sdcard": false
+		},
+		"/main.cpp.e32571": {
+			"sdcard": false
+		},
+		"/main.cpp.K32571": {
+			"sdcard": false
+		},
+		"/playfield.h.N32571": {
+			"sdcard": false
+		},
+		"/playfield.h": {
+			"sdcard": false
+		},
+		"/playfield.cpp.z32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp": {
+			"sdcard": false
+		},
+		"/gfx/garbage_grey.png.h18184": {
+			"sdcard": false
+		},
+		"/gfx/garbage_blue.png.T20708": {
+			"sdcard": false
+		},
+		"/gfx/garbage_red.png.T20777": {
+			"sdcard": false
+		},
+		"/gfx/cursor.png.B20804": {
+			"sdcard": false
+		},
+		"/gfx/blocks.png.T20908": {
+			"sdcard": false
+		},
+		"/gfx/garbage_blue.png.T20942": {
+			"sdcard": false
+		},
+		"/gfx/garbage_red.png.k21010": {
+			"sdcard": false
+		},
+		"/gfx/blocks.png.T21033": {
+			"sdcard": false
+		},
+		"/gfx/blocks.png.j21033": {
+			"sdcard": false
+		},
+		"/playfield.h.D32571": {
+			"sdcard": false
+		},
+		"/playfield.h.w32571": {
+			"sdcard": false
+		},
+		"/playfield.h.r32571": {
+			"sdcard": false
+		},
+		"/playfield.h.W32571": {
+			"sdcard": false
+		},
+		"/playfield.h.Z32571": {
+			"sdcard": false
+		},
+		"/playfield.h.H32571": {
+			"sdcard": false
+		},
+		"/playfield.h.l32571": {
+			"sdcard": false
+		},
+		"/playfield.h.c32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.M32571": {
+			"sdcard": false
+		},
+		"/playfield.h.Y32571": {
+			"sdcard": false
+		},
+		"/playfield.h.V32571": {
+			"sdcard": false
+		},
+		"/playfield.h.E32571": {
+			"sdcard": false
+		},
+		"/playfield.h.R32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.k32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.j32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.t32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.E32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.B32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.o32571": {
+			"sdcard": false
+		},
+		"/playfield.h.u32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.D32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.e32571": {
+			"sdcard": false
+		},
+		"/playfield.h.s32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.S32571": {
+			"sdcard": false
+		},
+		"/playfield.h.K32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.h32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.N32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.p32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.y32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.U32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.V32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.w32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.J32571": {
+			"sdcard": false
+		},
+		"/gfx.h.R32571": {
+			"sdcard": false
+		},
+		"/gfx.h.P32571": {
+			"sdcard": false
+		},
+		"/gfx.h.T32571": {
+			"sdcard": false
+		},
+		"/gfx.h.n32571": {
+			"sdcard": false
+		},
+		"/gfx.h.F32571": {
+			"sdcard": false
+		},
+		"/gfx.h.u32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.m32571": {
+			"sdcard": false
+		},
+		"/playfield.h.Q32571": {
+			"sdcard": false
+		},
+		"/playfield.h.B32571": {
+			"sdcard": false
+		},
+		"/gfx/blocks.png.T30583": {
+			"sdcard": false
+		},
+		"/gfx/cursor.png.k30606": {
+			"sdcard": false
+		},
+		"/gfx/garbage_grey.png.k30610": {
+			"sdcard": false
+		},
+		"/gfx/garbage_red.png.k30612": {
+			"sdcard": false
+		},
+		"/gfx/garbage_blue.png.k30608": {
+			"sdcard": false
+		},
+		"/gfx.h.X32571": {
+			"sdcard": false
+		},
+		"/gfx.h.J32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.x32571": {
+			"sdcard": false
+		},
+		"/gfx.h.w32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.G32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.L32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.O32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.C32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.v32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.I32571": {
+			"sdcard": false
+		},
+		"/playfield.h.v32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.F32571": {
+			"sdcard": false
+		},
+		"/main.cpp.Y32571": {
+			"sdcard": false
+		},
+		"/My_settings.h.p32571": {
+			"sdcard": false
+		},
+		"/gfx.h.V32571": {
+			"sdcard": false
+		},
+		"/main.cpp.A32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.R32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.i32571": {
+			"sdcard": false
+		},
+		"/main.cpp.v32571": {
+			"sdcard": false
+		},
+		"/gfx.h.H32571": {
+			"sdcard": false
+		},
+		"/main.cpp.q32571": {
+			"sdcard": false
+		},
+		"/main.cpp.m32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.P32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.K32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.Z32571": {
+			"sdcard": false
+		},
+		"/gfx.h.D32571": {
+			"sdcard": false
+		},
+		"/main.cpp.g32571": {
+			"sdcard": false
+		},
+		"/main.cpp.Q32571": {
+			"sdcard": false
+		},
+		"/main.cpp.D32571": {
+			"sdcard": false
+		},
+		"/gfx.h.G32571": {
+			"sdcard": false
+		},
+		"/main.cpp.r32571": {
+			"sdcard": false
+		},
+		"/main.cpp.P32571": {
+			"sdcard": false
+		},
+		"/main.cpp.L32571": {
+			"sdcard": false
+		},
+		"/gfx.h.a32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.X32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.n32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.Q32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.g32571": {
+			"sdcard": false
+		},
+		"/playfield.h.m32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.b32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.T32571": {
+			"sdcard": false
+		},
+		"/gfx/cursor.png.Cj2462": {
+			"sdcard": false
+		},
+		"/gfx.h.c32571": {
+			"sdcard": false
+		},
+		"/gfx/garbage_red.png.Cj2520": {
+			"sdcard": false
+		},
+		"/gfx/blocks.png.dT2514": {
+			"sdcard": false
+		},
+		"/gfx/garbage_blue.png.JH2516": {
+			"sdcard": false
+		},
+		"/gfx/garbage_grey.png.Cj2518": {
+			"sdcard": false
+		},
+		"/playfield.cpp.d32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.u32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.A32571": {
+			"sdcard": false
+		},
+		"/playfield.h.P32571": {
+			"sdcard": false
+		},
+		"/playfield.h.U32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.Y32571": {
+			"sdcard": false
+		},
+		"/playfield.h.b32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.H32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.a32571": {
+			"sdcard": false
+		},
+		"/gfx/blocks.png.cF8599": {
+			"sdcard": false
+		},
+		"/gfx.h.y32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.l32571": {
+			"sdcard": false
+		},
+		"/main.cpp.S32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.q32571": {
+			"sdcard": false
+		},
+		"/gfx/bgtest.png.T16988": {
+			"sdcard": false
+		},
+		"/gfx/bgtest.png": {
+			"sdcard": false
+		},
+		"/playfield.cpp.s32571": {
+			"sdcard": false
+		},
+		"/gfx/bgtest.h": {
+			"sdcard": false
+		},
+		"/playfield.h.C32571": {
+			"sdcard": false
+		},
+		"/playfield.h.y32571": {
+			"sdcard": false
+		},
+		"/gfx/bgtest.gfx": {
+			"sdcard": false
+		},
+		"/main.cpp.M32571": {
+			"sdcard": false
+		},
+		"/main.cpp.O32571": {
+			"sdcard": false
+		},
+		"/My_settings.h.j32571": {
+			"sdcard": false
+		},
+		"/My_settings.h.y32571": {
+			"sdcard": false
+		},
+		"/My_settings.h.P32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.f32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.c32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.r32571": {
+			"sdcard": false
+		},
+		"/playfield.h.S32571": {
+			"sdcard": false
+		},
+		"/gfx/bgtest.png.B16988": {
+			"sdcard": false
+		},
+		"/playfield.h.i32571": {
+			"sdcard": false
+		},
+		"/playfield.h.J32571": {
+			"sdcard": false
+		},
+		"/main.cpp.a32571": {
+			"sdcard": false
+		},
+		"/gfx/bgtest.png.y16988": {
+			"sdcard": false
+		},
+		"/main.cpp.l32571": {
+			"sdcard": false
+		},
+		"/main.cpp.s32571": {
+			"sdcard": false
+		},
+		"/My_settings.h.z32571": {
+			"sdcard": false
+		},
+		"/playfield.h.O32571": {
+			"sdcard": false
+		},
+		"/playfield.cpp.W32571": {
+			"sdcard": false
+		},
+		"/gfx/screentest_11x11_tiles.png.u30469": {
+			"sdcard": false
+		},
+		"/gfx/screentest_11x11_tiles.png": {
+			"sdcard": false
+		},
+		"/gfx/screentest_11x11_tiles.png.i30588": {
+			"sdcard": false
+		},
+		"/My_settings.h.h32571": {
+			"sdcard": false
+		},
+		"/Pinball.elf": {
+			"sdcard": false
+		},
+		"/Pinball.bin": {
+			"sdcard": false
+		},
+		"/gfx.h.C32571": {
+			"sdcard": false
+		},
+		"/gfx.h.v32571": {
+			"sdcard": false
+		},
+		"/gfx.h.E32571": {
+			"sdcard": false
+		},
+		"/gfx.h.W32571": {
+			"sdcard": false
+		},
+		"/main.cpp.R32571": {
+			"sdcard": false
+		},
+		"/gfx.h.Y32571": {
+			"sdcard": false
+		},
+		"/gfx.h.S32571": {
+			"sdcard": false
+		},
+		"/gfx.h.B32571": {
+			"sdcard": false
+		},
+		"/gfx.h.O32571": {
+			"sdcard": false
+		},
+		"/gfx.h.Q32571": {
+			"sdcard": false
+		},
+		"/gfx.h.m32571": {
+			"sdcard": false
+		},
+		"/gfx.h.h32571": {
+			"sdcard": false
+		},
+		"/gfx.h.l32571": {
+			"sdcard": false
+		},
+		"/gfx.h.o32571": {
+			"sdcard": false
+		},
+		"/LICENSE": {
+			"sdcard": false
+		}
+	}
+}

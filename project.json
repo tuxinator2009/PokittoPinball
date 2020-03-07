@@ -1567,6 +1567,18 @@
 		},
 		"/LICENSE": {
 			"sdcard": false
+		},
+		"/gfx.h.z32571": {
+			"sdcard": false
+		},
+		"/PokittoPinball.elf": {
+			"sdcard": false
+		},
+		"/PokittoPinball.bin": {
+			"sdcard": false
+		},
+		"/My_settings.h.Q32571": {
+			"sdcard": false
 		}
 	}
 }

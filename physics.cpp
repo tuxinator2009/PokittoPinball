@@ -100,8 +100,9 @@ int step()
 		collisionX = (int)ball.center.x / 32;
 		collisionY = (int)ball.center.y / 32;
 		file->seek(TABLE_HEIGHT * TABLE_ROW_BYTES + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024);
-		file->read(collisionData, 1024);
-		memcpy(collisionData, tableMask2 + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024, 1024);
+		file->read(collisionData, 512);
+		file->read(collisionData, 512);
+		//memcpy(collisionData, tableMask2 + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024, 1024);
 	}
 	collisionValue = tableMask[(int)ball.center.y * TABLE_WIDTH + (int)ball.center.x];
 	if (collisionValue != 255)
@@ -113,6 +114,14 @@ int step()
 		r.y = ballVelocity.y - dot2 * normal.y;
 		ballVelocity.x = r.x;
 		ballVelocity.y = r.y;
+		if (ballVelocity.x > 1.28)
+			ballVelocity.x = 1.28;
+		if (ballVelocity.x < -1.28)
+			ballVelocity.x = -1.28;
+		if (ballVelocity.y > 1.28)
+			ballVelocity.y = 1.28;
+		if (ballVelocity.y < -1.28)
+			ballVelocity.y = 1.28;
 	}
 	return collisionValue;
 }

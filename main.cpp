@@ -1,38 +1,38 @@
 #include "Pokitto.h"
 #include <File>
 #include "gfx.h"
+#include "physics.h"
 
-struct Point
-{
-	float x;
-	float y;
-};
-
-struct Line
-{
-	Point p1;
-	Point p2;
-};
-
-struct Circle
-{
-	Point center;
-	float radius;
-};
+#define PHYSICS_STEP 5
+#define SLOW_MOTION 1
 
 using PC = Pokitto::Core;
 using PD = Pokitto::Display;
 
 File *file;
-Graphic ballGraphic = {gfxBall,8,8};
-Sprite ballSprite = {&ballGraphic,150,230,Sprite::FLAG_DRAW};
-Circle ball = {{154, 224},4};
-Point ballVelocity {0, 2.56};
-int collisionX, collisionY;
+Graphic graphics[] =
+{
+	{gfxBall,8,8},
+	{gfxFlipper,28,25}
+};
+Sprite sprites[] =
+{
+	{&graphics[1],34,215,Sprite::FLAG_DRAW},
+	{&graphics[1],85,215,Sprite::FLAG_DRAW|Sprite::FLAG_MIRROR},
+	{&graphics[0],87,3,Sprite::FLAG_DRAW}
+};
+Sprite *ballSprite = &sprites[2];
+Sprite *flipperLSprite = &sprites[0];
+Sprite *flipperRSprite = &sprites[1];
+Circle ball = {{87, 3},4};
+Point ballVelocity {0, 0};
+float gravity = 0.005;
+int collisionX, collisionY, collisionIndex;
 int screenY1, screenY2;
-uint8_t scanline[220];
+int numSprites = 3;
+uint8_t __attribute__((section (".bss"))) __attribute__ ((aligned)) scanline[220];
 uint8_t scanlinesDirty[22];
-uint8_t collisionData[512];//16x16 (8bits=angle + 5bits=trigger + 3bits=bounce=v/4)
+uint8_t __attribute__((section (".bss"))) __attribute__ ((aligned)) collisionData[1024];//16x16 (8bits=angle + 5bits=trigger + 3bits=bounce=v/4)
 
 void updateLines(int start, int end)
 {
@@ -46,36 +46,11 @@ void updateLines(int start, int end)
 		scanlinesDirty[y/8] |= 128 >> (y % 8);
 }
 
-void step()
-{
-	ball.center.x += ballVelocity.x;
-	ball.center.y += ballVelocity.y;
-	if (ball.center.x - ball.radius <= 0.0)
-	{
-		ball.center.x = ball.radius * 2 - ball.center.x;
-		ballVelocity.x *= -1.0;
-	}
-	else if (ball.center.x + ball.radius >= TABLE_WIDTH)
-	{
-		ball.center.x -= (ball.center.x + ball.radius - TABLE_WIDTH) * 2;
-		ballVelocity.x *= -1.0;
-	}
-	if (ball.center.y - ball.radius <= 0.0)
-	{
-		ball.center.y = ball.radius * 2 - ball.center.y;
-		ballVelocity.y *= -1.0;
-	}
-	else if (ball.center.y + ball.radius >= TABLE_HEIGHT)
-	{
-		ball.center.y -= (ball.center.y + ball.radius - TABLE_HEIGHT) * 2;
-		ballVelocity.y *= -1.0;
-	}
-}
-
 int main()
 {
 	int fps = 0;
-	int steps = 0;
+	int collisionValue = 0;
+	int collisionValue2 = 0;
 	uint32_t fpsCurrentTime = 0, fpsPreviousTime = 0;
 	uint32_t previousTime, currentTime, fileSkip;
 	PC::begin();
@@ -86,23 +61,29 @@ int main()
 	memset(scanline, 0, 220);
 	memset(scanlinesDirty, 0xFF, 22);
 	previousTime = currentTime = PC::getTime();
+	collisionX = -1;
+	collisionY = -1;
 	while(PC::isRunning())
 	{
 		if(PC::update(true))
 		{
-			updateLines(ballSprite.y - screenY1, ballSprite.y - screenY1 + ballSprite.gfx->h - 1);
+			updateLines(ballSprite->y - screenY1, ballSprite->y - screenY1 + ballSprite->gfx->h - 1);
 			currentTime = PC::getTime();
 			while (previousTime < currentTime)
 			{
-				step();
-				++steps;
-				previousTime += 5;
+				collisionValue = step();
+				collisionValue2 = collisionData[((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
+#if SLOW_MOTION == 0
+				previousTime += PHYSICS_STEP;
+#else
+				previousTime = currentTime;
+#endif
 			}
-			ballSprite.x = (int)(ball.center.x - ball.radius);
-			ballSprite.y = (int)(ball.center.y - ball.radius);
-			updateLines(ballSprite.y - screenY1, ballSprite.y - screenY1 + ballSprite.gfx->h - 1);
+			ballSprite->x = (int)(ball.center.x - ball.radius);
+			ballSprite->y = (int)(ball.center.y - ball.radius);
+			updateLines(ballSprite->y - screenY1, ballSprite->y - screenY1 + ballSprite->gfx->h - 1);
 			updateLines(0,9);
-			screenY2 = ballSprite.y - 84;
+			screenY2 = ballSprite->y - 84;
 			if (screenY2 < 0)
 				screenY2 = 0;
 			else if (screenY2 + 176 > TABLE_HEIGHT)
@@ -135,12 +116,28 @@ int main()
 						pixelCopy(scanline, gfxNumbers_8x10 + ((fps / 100) % 10) * 80 + y * 8, 8);
 						pixelCopy(scanline + 10, gfxNumbers_8x10 + ((fps / 10) % 10) * 80 + y * 8, 8);
 						pixelCopy(scanline + 20, gfxNumbers_8x10 + (fps % 10) * 80 + y * 8, 8);
-						pixelCopy(scanline + 50, gfxNumbers_8x10 + ((steps / 100) % 10) * 80 + y * 8, 8);
-						pixelCopy(scanline + 60, gfxNumbers_8x10 + ((steps / 10) % 10) * 80 + y * 8, 8);
-						pixelCopy(scanline + 70, gfxNumbers_8x10 + (steps % 10) * 80 + y * 8, 8);
+						pixelCopy(scanline + 50, gfxNumbers_8x10 + ((collisionValue / 100) % 10) * 80 + y * 8, 8);
+						pixelCopy(scanline + 60, gfxNumbers_8x10 + ((collisionValue / 10) % 10) * 80 + y * 8, 8);
+						pixelCopy(scanline + 70, gfxNumbers_8x10 + (collisionValue % 10) * 80 + y * 8, 8);
+						pixelCopy(scanline + 90, gfxNumbers_8x10 + ((collisionValue2 / 100) % 10) * 80 + y * 8, 8);
+						pixelCopy(scanline + 100, gfxNumbers_8x10 + ((collisionValue2 / 10) % 10) * 80 + y * 8, 8);
+						pixelCopy(scanline + 110, gfxNumbers_8x10 + (collisionValue2 % 10) * 80 + y * 8, 8);
 					}
-					if (y + screenY1 >= ballSprite.y && y + screenY1 < ballSprite.y + 8)
-						pixelCopy(scanline + ballSprite.x, ballSprite.gfx->data + (y + screenY1 - ballSprite.y) * ballSprite.gfx->w, ballSprite.gfx->w);
+					for (int i = 0; i < numSprites; ++i)
+					{
+						if ((sprites[i].flags & Sprite::FLAG_DRAW) != 0 && y + screenY1 >= sprites[i].y && y + screenY1 < sprites[i].y + sprites[i].gfx->h)
+						{
+							const uint8_t *gfx;
+							if ((sprites[i].flags & Sprite::FLAG_FLIP) != 0)
+								gfx = sprites[i].gfx->data + (sprites[i].gfx->h - (y + screenY1 - sprites[i].y) - 1) * sprites[i].gfx->w;
+							else
+								gfx = sprites[i].gfx->data + (y + screenY1 - sprites[i].y) * sprites[i].gfx->w;
+							if ((sprites[i].flags & Sprite::FLAG_MIRROR) != 0)
+								pixelCopyMirror(scanline + sprites[i].x, gfx, sprites[i].gfx->w);
+							else
+								pixelCopy(scanline + sprites[i].x, gfx, sprites[i].gfx->w);
+						}
+					}
 					flushLine(tablePalette, scanline);
 				}
 				else
@@ -148,7 +145,6 @@ int main()
 			}
 			memset(scanlinesDirty, 0x00, 22);
 			fpsCurrentTime = Pokitto::Core::getTime();
-			steps = 0;
 			if (fpsCurrentTime - fpsPreviousTime == 0)
 				fps = 999;
 			else

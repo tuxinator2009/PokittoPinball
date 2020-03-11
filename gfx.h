@@ -13,6 +13,7 @@ struct Graphic
 
 struct Sprite
 {
+	static const uint8_t FLAG_NONE = 0;
 	static const uint8_t FLAG_DRAW = 1;
 	static const uint8_t FLAG_FLIP = 2;
 	static const uint8_t FLAG_MIRROR = 4;

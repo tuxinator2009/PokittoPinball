@@ -296,7 +296,7 @@ void updateCollisionBuffer()
 		collisionY = (int)ball.center.y / 32;
 		file->seek(TABLE_HEIGHT * TABLE_ROW_BYTES + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024);
 		file->read(collisionData, 512);
-		file->read(collisionData, 512);
+		file->read(collisionData + 512, 512);
 		//memcpy(collisionData, tableMask2 + TABLE_HEIGHT * TABLE_ROW_BYTES + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024, 1024);
 	}
 }

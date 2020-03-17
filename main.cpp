@@ -30,34 +30,34 @@ Sprite sprites[] =
 {
 	{&graphics[1],34,215,Sprite::FLAG_NONE},
 	{&graphics[1],85,215,Sprite::FLAG_NONE|Sprite::FLAG_MIRROR},
-	{&graphics[0],87,9,Sprite::FLAG_DRAW}
+	{&graphics[0],97,9,Sprite::FLAG_DRAW}
 	//{&graphics[0],87,192,Sprite::FLAG_DRAW}
 };
 Sprite *ballSprite = &sprites[2];
 Sprite *flipperLSprite = &sprites[0];
 Sprite *flipperRSprite = &sprites[1];
-Circle ball = {{87, 9},4};
+Circle ball = {{97, 9},4};
 Point ballVelocity {0, 0};
 Point normal = {0,0};
 Circle flipperCircles[] =
 {
 	//{{4,12},5},
 	//{{25,22},3},
-	{{4+34,12+215},5},
-	{{25+34,22+215},3},
-	{{23+85,12+215},5},
-	{{2+85,22+215},3}
+	{{4+34,12+217},5},
+	{{25+34,22+217},3},
+	{{23+85,12+217},5},
+	{{2+85,22+217},3}
 };
 Line flipperLines[] =
 {
 	//{{4,8},{26,20}},
 	//{{3,16},{24,24}},
 	
-	{{4+34,8+215},{26+34,20+215}},
-	{{3+34,16+215},{24+34,24+215}},
+	{{4+34,8+217},{26+34,20+217}},
+	{{3+34,16+217},{24+34,24+217}},
 	
-	{{27-4+85,8+215},{27-26+85,20+215}},
-	{{27-3+85,16+215},{27-24+85,24+215}},
+	{{27-4+85,8+217},{27-26+85,20+217}},
+	{{27-3+85,16+217},{27-24+85,24+217}},
 };
 int8_t flipperAngle[2] = {0,0};
 float flipperAngularVelocity[2] = {0, 0};

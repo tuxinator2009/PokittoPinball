@@ -325,49 +325,49 @@ int step()
 	colliding = false;
 	if (ball.center.x - ball.radius <= 0.0)
 	{
-		ball.center.x = ball.radius + 1.0;
+		ball.center.x = ball.radius + 0.1;
 		ballVelocity.x *= -0.6;
 	}
 	else if (ball.center.x + ball.radius >= TABLE_WIDTH)
 	{
-		ball.center.x = TABLE_WIDTH - ball.radius - 1.0;
+		ball.center.x = TABLE_WIDTH - ball.radius - 0.1;
 		ballVelocity.x *= -0.6;
 	}
 	if (ball.center.y - ball.radius <= 0.0)
 	{
-		ball.center.y = ball.radius + 1.0;
+		ball.center.y = ball.radius + 0.1;
 		ballVelocity.y *= -0.6;
 	}
 	else if (ball.center.y + ball.radius >= TABLE_HEIGHT)
 	{
-		ball.center.y = TABLE_HEIGHT - ball.radius - 1.0;
+		ball.center.y = TABLE_HEIGHT - ball.radius - 0.1;
 		ballVelocity.y *= -0.6;
 	}
 	updateCollisionBuffer();
 	collisionValue = tableMask[(int)ball.center.y * TABLE_WIDTH + (int)ball.center.x];
 	collisionValue2 = tableMask2[TABLE_HEIGHT * TABLE_ROW_BYTES + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024 + ((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
 	collisionValue3 = collisionData[((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
-	/*if (collisionValue2 != 255)
+	if (collisionValue != 255)
 	{
-		normal.x = cosTable[collisionValue2];
-		normal.y = sinTable[collisionValue2];
-		float dot2 = dot(ballVelocity, normal) * 2.0;
+		normal.x = cosTable[collisionValue];
+		normal.y = sinTable[collisionValue];
+		float dot2 = dot(ballVelocity, normal) * 1.6;
 		ballVelocity.x -= dot2 * normal.x;
 		ballVelocity.y -= dot2 * normal.y;
-		ball.center.x += normal.x;
-		ball.center.y += normal.y;
-		updateCollisionBuffer();
-		collisionValue2 = tableMask2[TABLE_HEIGHT * TABLE_ROW_BYTES + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024 + ((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
-	}*/
+		ball.center.x += normal.x * (ball.center.x - (int)ball.center.x + 0.1);
+		ball.center.y += normal.y * (ball.center.y - (int)ball.center.y + 0.1);
+		//updateCollisionBuffer();
+		//collisionValue = tableMask2[TABLE_HEIGHT * TABLE_ROW_BYTES + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024 + ((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
+	}
 	for (int i = 0; i < 4; ++i)
 	{
 		if (lineCircle(flipperLines[i], ball, closest))
 		{
-			float rad = dist(closest, flipperCircles[i & 2].center);
-			float vel = flipperAngularVelocity[i / 2] / 255.0 * 2.0 * PI * rad;
-			len = sqrt(dot(ballVelocity, ballVelocity));
-			ballVelocity.x += ballVelocity.x / len * vel;
-			ballVelocity.y += ballVelocity.y / len * vel;
+			//float rad = dist(closest, flipperCircles[i & 2].center);
+			float vel = flipperAngularVelocity[i / 2] / 255.0 * 2.0 * PI;
+			//len = sqrt(dot(ballVelocity, ballVelocity));
+			//ballVelocity.x += ballVelocity.x / len * vel;
+			//ballVelocity.y += ballVelocity.y / len * vel;
 			normal.x = ball.center.x - closest.x;
 			normal.y = ball.center.y - closest.y;
 			len = dist(closest, ball.center);
@@ -375,28 +375,28 @@ int step()
 			normal.y /= len;
 			//circumference = 2 * PI * radius
 			//velocity = angleVelocity / 255 * circumfrance
-			float dot2 = std::abs(dot(ballVelocity, normal) * 1.6);
-			ballVelocity.x += dot2 * normal.x;
-			ballVelocity.y += dot2 * normal.y;
-			ball.center.x += normal.x * (ball.radius + 1 - len);
-			ball.center.y += normal.y * (ball.radius + 1 - len);
+			vel += std::abs(dot(ballVelocity, normal) * 1.6);
+			ballVelocity.x += vel * normal.x;
+			ballVelocity.y += vel * normal.y;
+			ball.center.x += normal.x * (ball.radius + 0.1 - len);
+			ball.center.y += normal.y * (ball.radius + 0.1 - len);
 			colliding = true;
 		}
 		else if (circleCircle(flipperCircles[i], ball, closest))
 		{
-			float rad = dist(closest, flipperCircles[i & 2].center);
-			float vel = flipperAngularVelocity[i / 2] / 255.0 * 2.0 * PI * rad;
-			len = sqrt(dot(ballVelocity, ballVelocity));
-			ballVelocity.x += ballVelocity.x / len * vel;
-			ballVelocity.y += ballVelocity.y / len * vel;
+			//float rad = dist(closest, flipperCircles[i & 2].center);
+			float vel = flipperAngularVelocity[i / 2] / 255.0 * 2.0 * PI;
+			//len = sqrt(dot(ballVelocity, ballVelocity));
+			//ballVelocity.x += ballVelocity.x / len * vel;
+			//ballVelocity.y += ballVelocity.y / len * vel;
 			len = dist(flipperCircles[i].center, ball.center);
 			normal.x = (ball.center.x - flipperCircles[i].center.x) / len;
 			normal.y = (ball.center.y - flipperCircles[i].center.y) / len;
-			float dot2 = std::abs(dot(ballVelocity, normal) * 1.6);
-			ballVelocity.x += dot2 * normal.x;
-			ballVelocity.y += dot2 * normal.y;
-			ball.center.x += normal.x * (ball.radius + flipperCircles[i].radius + 1 - len);
-			ball.center.y += normal.y * (ball.radius + flipperCircles[i].radius + 1 - len);
+			vel += std::abs(dot(ballVelocity, normal) * 1.6);
+			ballVelocity.x += vel * normal.x;
+			ballVelocity.y += vel * normal.y;
+			ball.center.x += normal.x * (ball.radius + flipperCircles[i].radius + 0.1 - len);
+			ball.center.y += normal.y * (ball.radius + flipperCircles[i].radius + 0.1 - len);
 			colliding = true;
 		}
 	}
@@ -404,9 +404,13 @@ int step()
 		ballVelocity.x = 1.28;
 	if (ballVelocity.x < -1.28)
 		ballVelocity.x = -1.28;
+	if (std::abs(ballVelocity.x) < 0.001)
+		ballVelocity.x = 0.0;
 	if (ballVelocity.y > 1.28)
 		ballVelocity.y = 1.28;
 	if (ballVelocity.y < -1.28)
 		ballVelocity.y = -1.28;
+	if (std::abs(ballVelocity.y) < 0.001)
+		ballVelocity.y = 0.0;
 	return collisionValue;
 }

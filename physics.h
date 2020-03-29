@@ -1,10 +1,30 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
+#define COLLISION_NONE 0
+#define COLLISION_TABLE 1
+#define COLLISION_LFLIPPER 2
+#define COLLISION_RFLIPPER 3
+#define COLLISION_BUMPER 4
+
+static const uint8_t BUMPER_1_NORMAL = 2;
+static const uint8_t BUMPER_1_SQUISH = 3;
+static const uint8_t BUMPER_2_NORMAL = 4;
+static const uint8_t BUMPER_2_SQUISH = 5;
+static const uint8_t BUMPER_STEPS = 50;
+static const uint8_t BUMPER_EYE_L = 0;
+static const uint8_t BUMPER_EYE_R = 1;
+
 struct Point
 {
 	float x;
 	float y;
+};
+
+struct Point_i
+{
+	int x;
+	int y;
 };
 
 struct Line
@@ -13,16 +33,48 @@ struct Line
 	Point p2;
 };
 
+struct Line_i
+{
+	Point_i p1;
+	Point_i p2;
+};
+
 struct Circle
 {
 	Point center;
 	float radius;
 };
 
+struct Circle_i
+{
+	Point_i center;
+	int radius;
+};
+
 struct Box
 {
 	Point ul;
 	Point br;
+};
+
+struct Box_i
+{
+	Point_i ul;
+	Point_i br;
+};
+
+struct BumperCircle
+{
+	Circle circle;
+	float rest;
+	float push;
+};
+
+struct BumperLine
+{
+	Line line;
+	float rest;
+	float push;
 };
 
 const float sinTable[] =
@@ -65,27 +117,20 @@ const float cosTable[] =
 	 0.932472, 0.941089, 0.949135, 0.956604, 0.963493, 0.969797, 0.975512, 0.980635, 0.985162, 0.989092, 0.992421, 0.995147, 0.997269, 0.998786, 0.999696, 1.000000
 };
 
-const uint8_t tableMask[] =
-{
-	#include "tableMask.txt"
-};
-
-const uint8_t tableMask2[] = 
-{
-	#include "tableMask2.txt"
-};
-
+void updateLines(int start, int end);
 void directCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
 uint8_t clipLine(int16_t *x0, int16_t *y0, int16_t *x1, int16_t *y1);
 void directLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
 float dist2(const Point &p1, const Point &p2);
 float dist(const Point &p1, const Point &p2);
+float dot(const Point &p1, const Point &p2);
 bool linePoint(const Line &l, const Point &p);
 bool pointCircle(const Point &p, const Circle &c);
-bool lineCircle(float x1, float y1, float x2, float y2, float cx, float cy, float r, float &closestX, float &closestY);
+bool lineCircle(const Line &l, const Circle &c, Point &closest);
 bool circleCircle(const Circle &c1, const Circle &c2, Point &closest);
 void updateCollisionBuffer();
-void rotatePoint(Point &p, const Point &o, const uint8_t angle);
-int step();
+void rotatePoint(Point &p, const Point &o, const float &cosine, const float &sine);
+void rotateBox(Box &b, const Point &o, const float &cosine, const float &sine);
+void step();
 
 #endif //PHYSICS_H

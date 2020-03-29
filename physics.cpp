@@ -6,28 +6,50 @@
 extern File *file;
 extern Graphic graphics[];
 extern Sprite sprites[];
+extern Light lights[];
 extern Sprite *ballSprite;
 extern Sprite *flipperLSprite;
 extern Sprite *flipperRSprite;
 extern Circle ball;
 extern Point ballVelocity;
 extern Point normal;
+extern Point collisionPoint;
 extern Circle flipperCircles[];
 extern Line flipperLines[];
 extern Point flipperLinePoints[];
+extern BumperCircle bumperCircles[];
+extern BumperLine bumperLines[];
 extern int8_t flipperAngle[2];
 extern float flipperAngularVelocity[2];
 extern float gravity;
 extern int collisionX, collisionY, collisionIndex;
 extern int screenY1, screenY2;
 extern int numSprites;
+extern int numBumperCircles;
+extern int numBumperLines;
+extern int numLights;
+extern uint32_t steps;
 extern uint8_t scanline[220];
 extern uint8_t scanlinesDirty[22];
 extern uint8_t collisionData[1024];//16x16 (8bits=angle + 5bits=trigger + 3bits=bounce=v/4)
-extern bool colliding;
-extern int collisionValue;
-extern int collisionValue2;
-extern int collisionValue3;
+extern uint8_t collision;
+extern uint8_t bumperSteps[2];
+
+void updateLines(int start, int end)
+{
+	if (end < 0)
+		return;
+	if (start > 175)
+		return;
+	if (start < 0)
+		start = 0;
+	if (end > 175)
+		end = 175;
+	if (start > end)
+		return;
+	for (int y = start; y <= end; ++y)
+		scanlinesDirty[y/8] |= 128 >> (y % 8);
+}
 
 void directCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color) {
 	int16_t f = 1 - r;
@@ -239,29 +261,16 @@ bool pointCircle(const Point &p, const Circle &c)
 
 bool lineCircle(const Line &l, const Circle &c, Point &closest)
 {
-	if (pointCircle(l.p1, c))
-	{
-		closest.x = l.p1.x;
-		closest.y = l.p1.y;
-		return true;
-	}
-	else if (pointCircle(l.p2, c))
-	{
-		closest.x = l.p2.x;
-		closest.y = l.p2.y;
-		return true;
-	}
-	float len = dist(l.p1, l.p2);
-	float dot = ( ((c.center.x-l.p1.x)*(l.p2.x-l.p1.x)) + ((c.center.y-l.p1.y)*(l.p2.y-l.p1.y)) ) / pow(len,2);
-	
-	// find the closest point on the line
+	//use length squared instead of length because the dot product is divided by the squared length anyway
+	//this saves having to do a costly square root calculation
+	float len2 = dist2(l.p1, l.p2);
+	float dot = (((c.center.x - l.p1.x) * (l.p2.x - l.p1.x)) + ((c.center.y - l.p1.y) * (l.p2.y - l.p1.y))) / len2;
+	//find the closest point along the line's infinite plane to the circle's center
 	closest.x = l.p1.x + (dot * (l.p2.x-l.p1.x));
 	closest.y = l.p1.y + (dot * (l.p2.y-l.p1.y));
-	
-	// is this point actually on the line segment?
-	// if so keep going, but if not, return false
-	//if (!linePoint(l, closest)) // Closest point already lies along line's plane, just need to test if it falls within it's bounds.
-	//	return false;
+	//since closest point is already on the line's infinite plane we don't need proper line-point collision checking
+	//instead we just need to check if the closest point is within the bounds of the line
+	//we check both x and y in case of a completely horizontal or vertical line one would always return true
 	if (closest.x < std::min(l.p1.x, l.p2.x))
 		return false;
 	if (closest.x > std::max(l.p1.x, l.p2.x))
@@ -270,17 +279,22 @@ bool lineCircle(const Line &l, const Circle &c, Point &closest)
 		return false;
 	if (closest.y > std::max(l.p1.y, l.p2.y))
 		return false;
-	
-	if (dist(c.center, closest) <= c.radius + 0.1)
+	//finally check if the distance between the closest point and the circle's center is less than or equal to the circle's radius
+	//We use the distance squared and compare it to the radius squared to eliminate a costly square root calculation
+	if (dist2(c.center, closest) <= c.radius * c.radius + 0.1)
 		return true;
 	return false;
 }
 
 bool circleCircle(const Circle &c1, const Circle &c2, Point &closest)
 {
-	float distance = dist(c1.center, c2.center);
-	if (distance <= c1.radius + c2.radius)
+	//avoid square root calculation for checking collision
+	float distance = dist2(c1.center, c2.center);
+	if (distance <= (c1.radius + c2.radius) * (c1.radius + c2.radius))
 	{
+		//only calculate the square root if the two circles are in fact colliding
+		//this is needed so we can determine the point along the first circle where the collision took place.
+		distance = sqrt(distance);
 		closest.x = c1.center.x + ((c1.center.x - c2.center.x) / distance) * c1.radius;
 		closest.y = c1.center.y + ((c1.center.y - c2.center.y) / distance) * c1.radius;
 		return true;
@@ -294,35 +308,51 @@ void updateCollisionBuffer()
 	{
 		collisionX = (int)ball.center.x / 32;
 		collisionY = (int)ball.center.y / 32;
-		file->seek(TABLE_HEIGHT * TABLE_ROW_BYTES + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024);
+		file->seek(TABLE_COLLISION_START + (collisionY * TABLE_COLLISION_WIDTH + collisionX) * 1024);
 		file->read(collisionData, 512);
 		file->read(collisionData + 512, 512);
-		//memcpy(collisionData, tableMask2 + TABLE_HEIGHT * TABLE_ROW_BYTES + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024, 1024);
 	}
 }
 
-void rotatePoint(Point &p, const Point &o, const uint8_t angle)
+//Rotate point (p) by angle around origin (o)
+//Angle is degrees / 360 * 255
+void rotatePoint(Point &p, const Point &o, const float &cosine, const float &sine)
 {
 	//x2=cosβx1−sinβy1
 	//y2=sinβx1+cosβy1
 	p.x -= o.x;
 	p.y -= o.y;
-	float tmp = p.x * cosTable[angle] - p.y * sinTable[angle];
-	p.y = p.x * sinTable[angle] + p.y * cosTable[angle];
+	float tmp = p.x * cosine - p.y * sine;
+	p.y = p.x * sine + p.y * cosine;
 	p.x = tmp;
 	p.x += o.x;
 	p.y += o.y;
 }
 
-int step()
+void rotateBox(Box &b, const Point &o, const float &cosine, const float &sine)
+{
+	Point ul = {b.ul.x, b.ul.y};
+	Point ur = {b.br.x, b.ul.y};
+	Point bl = {b.ul.x, b.br.y};
+	Point br = {b.br.x, b.br.y};
+	rotatePoint(ul, o, cosine, sine);
+	rotatePoint(ur, o, cosine, sine);
+	rotatePoint(bl, o, cosine, sine);
+	rotatePoint(br, o, cosine, sine);
+	b.ul.x = std::min(std::min(std::min(ul.x, ur.x), bl.x), br.x);
+	b.ul.y = std::min(std::min(std::min(ul.y, ur.y), bl.y), br.y);
+	b.br.x = std::max(std::max(std::max(ul.x, ur.x), bl.x), br.x);
+	b.br.y = std::max(std::max(std::max(ul.y, ur.y), bl.y), br.y);
+}
+
+void step()
 {
 	Point closest;
 	float len;
-	//uint8_t collisionValue;
+	uint8_t collisionValue;
 	ballVelocity.y += gravity;
 	ball.center.x += ballVelocity.x;
 	ball.center.y += ballVelocity.y;
-	colliding = false;
 	if (ball.center.x - ball.radius <= 0.0)
 	{
 		ball.center.x = ball.radius + 0.1;
@@ -343,74 +373,133 @@ int step()
 		ball.center.y = TABLE_HEIGHT - ball.radius - 0.1;
 		ballVelocity.y *= -0.6;
 	}
-	updateCollisionBuffer();
-	collisionValue = tableMask[(int)ball.center.y * TABLE_WIDTH + (int)ball.center.x];
-	collisionValue2 = tableMask2[TABLE_HEIGHT * TABLE_ROW_BYTES + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024 + ((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
-	collisionValue3 = collisionData[((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
-	if (collisionValue != 255)
+	for (int i = 0; i < numBumperCircles && collision == COLLISION_NONE; ++i)
 	{
-		normal.x = cosTable[collisionValue];
-		normal.y = sinTable[collisionValue];
-		float dot2 = dot(ballVelocity, normal) * 1.6;
-		ballVelocity.x -= dot2 * normal.x;
-		ballVelocity.y -= dot2 * normal.y;
-		ball.center.x += normal.x * (ball.center.x - (int)ball.center.x + 0.1);
-		ball.center.y += normal.y * (ball.center.y - (int)ball.center.y + 0.1);
-		//updateCollisionBuffer();
-		//collisionValue = tableMask2[TABLE_HEIGHT * TABLE_ROW_BYTES + (collisionY * (TABLE_WIDTH / 32) + collisionX) * 1024 + ((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
+		if (circleCircle(bumperCircles[i].circle, ball, closest))
+		{
+			len = dist(bumperCircles[i].circle.center, ball.center);
+			normal.x = (ball.center.x - bumperCircles[i].circle.center.x) / len;
+			normal.y = (ball.center.y - bumperCircles[i].circle.center.y) / len;
+			float vel = dot(ballVelocity, normal) * (1.0 + bumperCircles[i].rest) - bumperCircles[i].push;
+			ballVelocity.x -= vel * normal.x;
+			ballVelocity.y -= vel * normal.y;
+			ball.center.x += normal.x * (ball.radius + bumperCircles[i].circle.radius + 0.1 - len);
+			ball.center.y += normal.y * (ball.radius + bumperCircles[i].circle.radius + 0.1 - len);
+			collisionPoint.x = closest.x;
+			collisionPoint.y = closest.y;
+			collision = COLLISION_BUMPER;
+			if (i == 0)
+			{
+				updateLines(sprites[BUMPER_1_NORMAL].y - screenY1, sprites[BUMPER_1_NORMAL].y - screenY1 + sprites[BUMPER_1_NORMAL].gfx->h - 1);
+				sprites[BUMPER_1_NORMAL].flags = Sprite::FLAG_NONE|Sprite::FLAG_LAYER1;
+				sprites[BUMPER_1_SQUISH].flags = Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1;
+				bumperSteps[0] = BUMPER_STEPS;
+			}
+			else if (i == 1)
+			{
+				updateLines(sprites[BUMPER_2_NORMAL].y - screenY1, sprites[BUMPER_2_NORMAL].y - screenY1 + sprites[BUMPER_2_NORMAL].gfx->h - 1);
+				sprites[BUMPER_2_NORMAL].flags = Sprite::FLAG_NONE|Sprite::FLAG_LAYER1;
+				sprites[BUMPER_2_SQUISH].flags = Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1;
+				bumperSteps[1] = BUMPER_STEPS;
+			}
+		}
 	}
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < numBumperLines && collision == COLLISION_NONE; ++i)
+	{
+		if (lineCircle(bumperLines[i].line, ball, closest))
+		{
+			len = dist(closest, ball.center);
+			normal.x = (ball.center.x - closest.x) / len;
+			normal.y = (ball.center.y - closest.y) / len;
+			float vel = dot(ballVelocity, normal) * (1.0 + bumperLines[i].rest) - bumperLines[i].push;
+			ballVelocity.x -= vel * normal.x;
+			ballVelocity.y -= vel * normal.y;
+			ball.center.x += normal.x * (ball.radius + 0.1 - len);
+			ball.center.y += normal.y * (ball.radius + 0.1 - len);
+			collisionPoint.x = closest.x;
+			collisionPoint.y = closest.y;
+			collision = COLLISION_BUMPER;
+			if (i <= 1)
+			{
+				updateLines(lights[i].y - screenY1, lights[i].y - screenY1 + lights[i].gfx->h - 1);
+				lights[i].state |= Light::STATE_ON;
+				lights[i].timer = 50;
+			}
+		}
+	}
+	if (collision == COLLISION_NONE)
+	{
+		updateCollisionBuffer();
+		collisionValue = collisionData[((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
+		if (collisionValue != 255)
+		{
+			normal.x = cosTable[collisionValue];
+			normal.y = sinTable[collisionValue];
+			float dot2 = dot(ballVelocity, normal) * 1.6;
+			ballVelocity.x -= dot2 * normal.x;
+			ballVelocity.y -= dot2 * normal.y;
+			ball.center.x += normal.x * (ball.center.x - (int)ball.center.x + 0.1);
+			ball.center.y += normal.y * (ball.center.y - (int)ball.center.y + 0.1);
+			collision = COLLISION_TABLE;
+			//updateCollisionBuffer();
+			//collisionValue = collisionData[((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
+		}
+	}
+	for (int i = 0; i < 4 && collision == COLLISION_NONE; ++i)
 	{
 		if (lineCircle(flipperLines[i], ball, closest))
 		{
-			//float rad = dist(closest, flipperCircles[i & 2].center);
-			float vel = flipperAngularVelocity[i / 2] / 255.0 * 2.0 * PI;
-			//len = sqrt(dot(ballVelocity, ballVelocity));
-			//ballVelocity.x += ballVelocity.x / len * vel;
-			//ballVelocity.y += ballVelocity.y / len * vel;
-			normal.x = ball.center.x - closest.x;
-			normal.y = ball.center.y - closest.y;
+			float rad = dist(closest, flipperCircles[i & 2].center);
+			float vel = flipperAngularVelocity[i / 2] * 1.2 * PI * rad;
 			len = dist(closest, ball.center);
-			normal.x /= len;
-			normal.y /= len;
-			//circumference = 2 * PI * radius
-			//velocity = angleVelocity / 255 * circumfrance
-			vel += std::abs(dot(ballVelocity, normal) * 1.6);
+			normal.x = (ball.center.x - closest.x) / len;
+			normal.y = (ball.center.y - closest.y) / len;
+			vel += std::abs(dot(ballVelocity, normal) * 1.2);
 			ballVelocity.x += vel * normal.x;
 			ballVelocity.y += vel * normal.y;
 			ball.center.x += normal.x * (ball.radius + 0.1 - len);
 			ball.center.y += normal.y * (ball.radius + 0.1 - len);
-			colliding = true;
+			collisionPoint.x = closest.x;
+			collisionPoint.y = closest.y;
+			if (i / 2 == 0)
+				collision = COLLISION_LFLIPPER;
+			else
+				collision = COLLISION_RFLIPPER;
 		}
-		else if (circleCircle(flipperCircles[i], ball, closest))
+	}
+	for (int i = 0; i < 4 && collision == COLLISION_NONE; ++i)
+	{
+		if (circleCircle(flipperCircles[i], ball, closest))
 		{
-			//float rad = dist(closest, flipperCircles[i & 2].center);
-			float vel = flipperAngularVelocity[i / 2] / 255.0 * 2.0 * PI;
-			//len = sqrt(dot(ballVelocity, ballVelocity));
-			//ballVelocity.x += ballVelocity.x / len * vel;
-			//ballVelocity.y += ballVelocity.y / len * vel;
+			float rad = dist(closest, flipperCircles[i & 2].center);
+			float vel = flipperAngularVelocity[i / 2] * 1.2 * PI * rad;
 			len = dist(flipperCircles[i].center, ball.center);
 			normal.x = (ball.center.x - flipperCircles[i].center.x) / len;
 			normal.y = (ball.center.y - flipperCircles[i].center.y) / len;
-			vel += std::abs(dot(ballVelocity, normal) * 1.6);
+			vel += std::abs(dot(ballVelocity, normal) * 1.2);
 			ballVelocity.x += vel * normal.x;
 			ballVelocity.y += vel * normal.y;
 			ball.center.x += normal.x * (ball.radius + flipperCircles[i].radius + 0.1 - len);
 			ball.center.y += normal.y * (ball.radius + flipperCircles[i].radius + 0.1 - len);
-			colliding = true;
+			collisionPoint.x = closest.x;
+			collisionPoint.y = closest.y;
+			if (i / 2 == 0)
+				collision = COLLISION_LFLIPPER;
+			else
+				collision = COLLISION_RFLIPPER;
 		}
 	}
-	if (ballVelocity.x > 1.28)
-		ballVelocity.x = 1.28;
-	if (ballVelocity.x < -1.28)
-		ballVelocity.x = -1.28;
-	if (std::abs(ballVelocity.x) < 0.001)
+	len = ballVelocity.x * ballVelocity.x + ballVelocity.y * ballVelocity.y;
+	if (len > 4.0)
+	{
+		len = 2.0 / sqrt(len);
+		ballVelocity.x *= len;
+		ballVelocity.y *= len;
+	}
+	else if (len <= 0.000001)
+	{
 		ballVelocity.x = 0.0;
-	if (ballVelocity.y > 1.28)
-		ballVelocity.y = 1.28;
-	if (ballVelocity.y < -1.28)
-		ballVelocity.y = -1.28;
-	if (std::abs(ballVelocity.y) < 0.001)
 		ballVelocity.y = 0.0;
-	return collisionValue;
+	}
+	++steps;
 }

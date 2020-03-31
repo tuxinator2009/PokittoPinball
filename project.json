@@ -2296,6 +2296,45 @@
 		},
 		"/project.json.Y15149": {
 			"sdcard": false
+		},
+		"/My_settings.h.P15149": {
+			"sdcard": false
+		},
+		"/My_settings.h.r15149": {
+			"sdcard": false
+		},
+		"/My_settings.h.R15149": {
+			"sdcard": false
+		},
+		"/My_settings.h.L15149": {
+			"sdcard": false
+		},
+		"/physics.cpp.b15149": {
+			"sdcard": false
+		},
+		"/main.cpp.X15149": {
+			"sdcard": false
+		},
+		"/main.cpp.F15149": {
+			"sdcard": false
+		},
+		"/gfx.h.W15149": {
+			"sdcard": false
+		},
+		"/gfx.h.G15149": {
+			"sdcard": false
+		},
+		"/gfx.h.j15149": {
+			"sdcard": false
+		},
+		"/gfx.h.X15149": {
+			"sdcard": false
+		},
+		"/gfx.h.D15149": {
+			"sdcard": false
+		},
+		"/gfx.h.u15149": {
+			"sdcard": false
 		}
 	},
 	"BUILDFlags": {

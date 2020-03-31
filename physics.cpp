@@ -356,17 +356,17 @@ void step()
 	if (ball.center.x - ball.radius <= 0.0)
 	{
 		ball.center.x = ball.radius + 0.1;
-		ballVelocity.x *= -0.6;
+		ballVelocity.x *= -0.3;
 	}
 	else if (ball.center.x + ball.radius >= TABLE_WIDTH)
 	{
 		ball.center.x = TABLE_WIDTH - ball.radius - 0.1;
-		ballVelocity.x *= -0.6;
+		ballVelocity.x *= -0.3;
 	}
 	if (ball.center.y - ball.radius <= 0.0)
 	{
 		ball.center.y = ball.radius + 0.1;
-		ballVelocity.y *= -0.6;
+		ballVelocity.y *= -0.3;
 	}
 	else if (ball.center.y + ball.radius >= TABLE_HEIGHT)
 	{
@@ -390,16 +390,18 @@ void step()
 			collision = COLLISION_BUMPER;
 			if (i == 0)
 			{
-				updateLines(sprites[BUMPER_1_NORMAL].y - screenY1, sprites[BUMPER_1_NORMAL].y - screenY1 + sprites[BUMPER_1_NORMAL].gfx->h - 1);
-				sprites[BUMPER_1_NORMAL].flags = Sprite::FLAG_NONE|Sprite::FLAG_LAYER1;
-				sprites[BUMPER_1_SQUISH].flags = Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1;
+				updateLines(sprites[2].y - screenY1, sprites[2].y - screenY1 + sprites[2].gfx->h - 1);
+				sprites[2].frame = 1;
+				//sprites[BUMPER_1_NORMAL].flags = Sprite::FLAG_NONE|Sprite::FLAG_LAYER1;
+				//sprites[BUMPER_1_SQUISH].flags = Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1;
 				bumperSteps[0] = BUMPER_STEPS;
 			}
 			else if (i == 1)
 			{
-				updateLines(sprites[BUMPER_2_NORMAL].y - screenY1, sprites[BUMPER_2_NORMAL].y - screenY1 + sprites[BUMPER_2_NORMAL].gfx->h - 1);
-				sprites[BUMPER_2_NORMAL].flags = Sprite::FLAG_NONE|Sprite::FLAG_LAYER1;
-				sprites[BUMPER_2_SQUISH].flags = Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1;
+				updateLines(sprites[3].y - screenY1, sprites[3].y - screenY1 + sprites[3].gfx->h - 1);
+				sprites[3].frame = 1;
+				//sprites[BUMPER_2_NORMAL].flags = Sprite::FLAG_NONE|Sprite::FLAG_LAYER1;
+				//sprites[BUMPER_2_SQUISH].flags = Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1;
 				bumperSteps[1] = BUMPER_STEPS;
 			}
 		}
@@ -435,12 +437,15 @@ void step()
 		{
 			normal.x = cosTable[collisionValue];
 			normal.y = sinTable[collisionValue];
-			float dot2 = dot(ballVelocity, normal) * 1.6;
-			ballVelocity.x -= dot2 * normal.x;
-			ballVelocity.y -= dot2 * normal.y;
-			ball.center.x += normal.x * (ball.center.x - (int)ball.center.x + 0.1);
-			ball.center.y += normal.y * (ball.center.y - (int)ball.center.y + 0.1);
-			collision = COLLISION_TABLE;
+			float dot2 = dot(ballVelocity, normal) * 1.3;
+			if (dot2 < 0.0)
+			{
+				ballVelocity.x -= dot2 * normal.x;
+				ballVelocity.y -= dot2 * normal.y;
+				ball.center.x += normal.x * (ball.center.x - (int)ball.center.x + 0.1);
+				ball.center.y += normal.y * (ball.center.y - (int)ball.center.y + 0.1);
+				collision = COLLISION_TABLE;
+			}
 			//updateCollisionBuffer();
 			//collisionValue = collisionData[((int)ball.center.y % 32) * 32 + ((int)ball.center.x % 32)];
 		}

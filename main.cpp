@@ -22,9 +22,11 @@ File *file;
 Graphic graphics[] =
 {
 	{gfxBall,8,8},
-	{gfxFlipper,28,25},
-	{gfxBarrelNormal,23,26},
-	{gfxBarrelSquished,23,26},
+	{gfxFlipper,38,40},
+	//{gfxFlipper,28,25},
+	{gfxBarrel,23,26},
+	//{gfxBarrelNormal,23,26},
+	//{gfxBarrelSquished,23,26},
 	{gfxLight_Eye,11,16},
 	{gfxLight_Water0,7,8},
 	{gfxLight_Water1,9,16},
@@ -40,32 +42,29 @@ Graphic graphics[] =
 };
 Sprite sprites[] =
 {
-	{&graphics[1],70,296,Sprite::FLAG_DRAW},
-	{&graphics[1],112,296,Sprite::FLAG_DRAW|Sprite::FLAG_MIRROR},
-	{&graphics[2],101,50,Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1},
-	{&graphics[3],101,50,Sprite::FLAG_NONE|Sprite::FLAG_LAYER1},
-	{&graphics[2],130,73,Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1},
-	{&graphics[3],130,73,Sprite::FLAG_NONE|Sprite::FLAG_LAYER1},
-	{&graphics[0],212,283,Sprite::FLAG_DRAW}
-	//{&graphics[0],87,192,Sprite::FLAG_DRAW}
+	{&graphics[1],60,290,Sprite::FLAG_DRAW,0},
+	{&graphics[1],110,290,Sprite::FLAG_DRAW|Sprite::FLAG_MIRROR,0},
+	{&graphics[2],101,50,Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1,0},
+	{&graphics[2],130,73,Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1,0},
+	{&graphics[0],212,283,Sprite::FLAG_DRAW,0}
 };
 Light lights[] =
 {
-	{&graphics[4],38,258,0,0x23,0x22,Light::STATE_OFF,0},
-	{&graphics[4],159,258,0,0x23,0x22,Light::STATE_OFF|Light::STATE_MIRROR,0},
-	{&graphics[5],22,171,25,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
-	{&graphics[6],17,164,50,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
-	{&graphics[7],14,156,75,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
-	{&graphics[8],10,148,25,0x24,0x25,Light::STATE_OFF|Light::STATE_FLASHING,75},
-	{&graphics[9],6,139,50,0x24,0x25,Light::STATE_OFF|Light::STATE_FLASHING,75},
-	{&graphics[10],3,128,75,0x24,0x25,Light::STATE_OFF|Light::STATE_FLASHING,75},
-	{&graphics[11],1,117,25,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
-	{&graphics[12],1,107,50,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
-	{&graphics[13],1,96,75,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
-	{&graphics[14],2,87,25,0x24,0x25,Light::STATE_OFF|Light::STATE_FLASHING,75},
-	{&graphics[15],3,80,50,0x24,0x25,Light::STATE_OFF|Light::STATE_FLASHING,75}
+	{&graphics[3],38,258,0,0x23,0x22,Light::STATE_OFF,0},
+	{&graphics[3],159,258,0,0x23,0x22,Light::STATE_OFF|Light::STATE_MIRROR,0},
+	{&graphics[4],22,171,25,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
+	{&graphics[5],17,164,50,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
+	{&graphics[6],14,156,75,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
+	{&graphics[7],10,148,25,0x24,0x25,Light::STATE_OFF|Light::STATE_FLASHING,75},
+	{&graphics[8],6,139,50,0x24,0x25,Light::STATE_OFF|Light::STATE_FLASHING,75},
+	{&graphics[9],3,128,75,0x24,0x25,Light::STATE_OFF|Light::STATE_FLASHING,75},
+	{&graphics[10],1,117,25,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
+	{&graphics[11],1,107,50,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
+	{&graphics[12],1,96,75,0x24,0x25,Light::STATE_ON|Light::STATE_FLASHING,75},
+	{&graphics[13],2,87,25,0x24,0x25,Light::STATE_OFF|Light::STATE_FLASHING,75},
+	{&graphics[14],3,80,50,0x24,0x25,Light::STATE_OFF|Light::STATE_FLASHING,75}
 };
-Sprite *ballSprite = &sprites[6];
+Sprite *ballSprite = &sprites[4];
 Sprite *flipperSprites[] = {&sprites[0], &sprites[1]};
 Circle ball = {{212+4, 283+4},4};
 Point ballVelocity {0, 0};
@@ -73,22 +72,17 @@ Point normal = {0,0};
 Point collisionPoint = {-1,-1};
 Circle flipperCircles[] =
 {
-	{{4+70,12+296},5},
-	{{25+70,22+296},3},
-	{{23+112,12+296},5},
-	{{2+112,22+296},3}
+	{{5+60,17+290},6},
+	{{34+60,31+290},4},
+	{{32+110,17+290},6},
+	{{3+110,31+290},4}
 };
 Line flipperLines[] =
 {
-	{{4+70,8+296},{26+70,20+296}},
-	{{3+70,16+296},{24+70,24+296}},
-	{{27-4+112,8+296},{27-26+112,20+296}},
-	{{27-3+112,16+296},{27-24+112,24+296}}
-};
-Box flipperBoxes[] =
-{
-	{{34,225},{61,241}},
-	{{84,225},{111,241}}
+	{{7+60,12+290},{37+60,29+290}},
+	{{2+60,22+290},{32+60,34+290}},
+	{{0+110,29+290},{30+110,12+290}},
+	{{5+110,34+290},{35+110,22+290}}
 };
 BumperCircle bumperCircles[] =
 {
@@ -101,14 +95,13 @@ BumperLine bumperLines[] =
 	{{{36,244},{54,276}},0.6,0.5},
 	{{{153,276},{171,244}},0.6,0.5}
 };
-Point flipperSpriteCenters[2] = {{4,4},{23,4}};
 
 int8_t flipperAngle[2] = {0,0};
 float flipperAngularVelocity[2] = {0, 0};
 float gravity = 0.005;
 int collisionX, collisionY, collisionIndex;
 int screenY1, screenY2;
-int numSprites = 7;
+int numSprites = 5;
 int numBumperCircles = 3;
 int numBumperLines = 2;
 int numLights = 13;
@@ -173,9 +166,10 @@ int main()
 				flipperAngularVelocity[1] = 0.0;
 				if (buttonsPreviousState & BTN_MASK_LEFT)
 				{
-					flipperSprites[0]->flags |= Sprite::FLAG_FLIP;
+					//flipperSprites[0]->flags |= Sprite::FLAG_FLIP;
 					if (flipperAngle[0] < FLIPPER_MAX_ANGLE)
 					{
+						flipperSprites[0]->frame = 1;
 						++flipperAngle[0];
 						flipperAngularVelocity[0] = FLIPPER_ROTATE_AMOUNT / 255.0;
 						rotatePoint(flipperCircles[1].center, flipperCircles[0].center, cosTable[255 - FLIPPER_ROTATE_AMOUNT], sinTable[255 - FLIPPER_ROTATE_AMOUNT]);
@@ -183,7 +177,6 @@ int main()
 						rotatePoint(flipperLines[0].p2, flipperCircles[0].center, cosTable[255 - FLIPPER_ROTATE_AMOUNT], sinTable[255 - FLIPPER_ROTATE_AMOUNT]);
 						rotatePoint(flipperLines[1].p1, flipperCircles[0].center, cosTable[255 - FLIPPER_ROTATE_AMOUNT], sinTable[255 - FLIPPER_ROTATE_AMOUNT]);
 						rotatePoint(flipperLines[1].p2, flipperCircles[0].center, cosTable[255 - FLIPPER_ROTATE_AMOUNT], sinTable[255 - FLIPPER_ROTATE_AMOUNT]);
-						rotateBox(flipperBoxes[0], flipperCircles[0].center, cosTable[255 - FLIPPER_ROTATE_AMOUNT], sinTable[255 - FLIPPER_ROTATE_AMOUNT]);
 						if (collision == COLLISION_LFLIPPER)
 						{
 							normal.x = collisionPoint.x;
@@ -205,13 +198,17 @@ int main()
 						}
 					}
 					else
+					{
+						flipperSprites[0]->frame = 2;
 						collision = COLLISION_NONE;
+					}
 				}
 				else
 				{
-					flipperSprites[0]->flags = Sprite::FLAG_DRAW;
+					//flipperSprites[0]->flags = Sprite::FLAG_DRAW;
 					if (flipperAngle[0] > 0)
 					{
+						flipperSprites[0]->frame = 1;
 						--flipperAngle[0];
 						flipperAngularVelocity[0] = -FLIPPER_ROTATE_AMOUNT / 255.0;
 						rotatePoint(flipperCircles[1].center, flipperCircles[0].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
@@ -219,17 +216,20 @@ int main()
 						rotatePoint(flipperLines[0].p2, flipperCircles[0].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
 						rotatePoint(flipperLines[1].p1, flipperCircles[0].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
 						rotatePoint(flipperLines[1].p2, flipperCircles[0].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
-						rotateBox(flipperBoxes[0], flipperCircles[0].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
 						collision = COLLISION_NONE;
 					}
 					else
+					{
+						flipperSprites[0]->frame = 0;
 						collision = COLLISION_NONE;
+					}
 				}
 				if (buttonsPreviousState & BTN_MASK_RIGHT || buttonsPreviousState & BTN_MASK_A)
 				{
-					flipperSprites[1]->flags |= Sprite::FLAG_FLIP;
+					//flipperSprites[1]->flags |= Sprite::FLAG_FLIP;
 					if (flipperAngle[1] < FLIPPER_MAX_ANGLE)
 					{
+						flipperSprites[1]->frame = 1;
 						++flipperAngle[1];
 						flipperAngularVelocity[1] = FLIPPER_ROTATE_AMOUNT / 255.0;
 						rotatePoint(flipperCircles[3].center, flipperCircles[2].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
@@ -237,7 +237,6 @@ int main()
 						rotatePoint(flipperLines[2].p2, flipperCircles[2].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
 						rotatePoint(flipperLines[3].p1, flipperCircles[2].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
 						rotatePoint(flipperLines[3].p2, flipperCircles[2].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
-						rotateBox(flipperBoxes[1], flipperCircles[2].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
 						if (collision == COLLISION_RFLIPPER)
 						{
 							normal.x = collisionPoint.x;
@@ -259,13 +258,17 @@ int main()
 						}
 					}
 					else
+					{
+						flipperSprites[1]->frame = 2;
 						collision = COLLISION_NONE;
+					}
 				}
 				else
 				{
-					flipperSprites[1]->flags = Sprite::FLAG_DRAW|Sprite::FLAG_MIRROR;
+					//flipperSprites[1]->flags = Sprite::FLAG_DRAW|Sprite::FLAG_MIRROR;
 					if (flipperAngle[1] > 0)
 					{
+						flipperSprites[1]->frame = 1;
 						--flipperAngle[1];
 						flipperAngularVelocity[1] = -FLIPPER_ROTATE_AMOUNT / 255.0;
 						rotatePoint(flipperCircles[3].center, flipperCircles[2].center, cosTable[255 - FLIPPER_ROTATE_AMOUNT], sinTable[255 - FLIPPER_ROTATE_AMOUNT]);
@@ -273,11 +276,13 @@ int main()
 						rotatePoint(flipperLines[2].p2, flipperCircles[2].center, cosTable[255 - FLIPPER_ROTATE_AMOUNT], sinTable[255 - FLIPPER_ROTATE_AMOUNT]);
 						rotatePoint(flipperLines[3].p1, flipperCircles[2].center, cosTable[255 - FLIPPER_ROTATE_AMOUNT], sinTable[255 - FLIPPER_ROTATE_AMOUNT]);
 						rotatePoint(flipperLines[3].p2, flipperCircles[2].center, cosTable[255 - FLIPPER_ROTATE_AMOUNT], sinTable[255 - FLIPPER_ROTATE_AMOUNT]);
-						rotateBox(flipperBoxes[1], flipperCircles[2].center, cosTable[FLIPPER_ROTATE_AMOUNT], sinTable[FLIPPER_ROTATE_AMOUNT]);
 						collision = COLLISION_NONE;
 					}
 					else
+					{
+						flipperSprites[1]->frame = 0;
 						collision = COLLISION_NONE;
+					}
 				}
 				step();
 				if (bumperSteps[0] > 0)
@@ -285,9 +290,8 @@ int main()
 					--bumperSteps[0];
 					if (bumperSteps[0] == 0)
 					{
-						updateLines(sprites[BUMPER_1_NORMAL].y - screenY1, sprites[BUMPER_1_NORMAL].y - screenY1 + sprites[BUMPER_1_NORMAL].gfx->h - 1);
-						sprites[BUMPER_1_NORMAL].flags = Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1;
-						sprites[BUMPER_1_SQUISH].flags = Sprite::FLAG_NONE|Sprite::FLAG_LAYER1;
+						updateLines(sprites[2].y - screenY1, sprites[2].y - screenY1 + sprites[2].gfx->h - 1);
+						sprites[2].frame = 0;
 					}
 				}
 				if (bumperSteps[1] > 0)
@@ -295,9 +299,8 @@ int main()
 					--bumperSteps[1];
 					if (bumperSteps[1] == 0)
 					{
-						updateLines(sprites[BUMPER_2_NORMAL].y - screenY1, sprites[BUMPER_2_NORMAL].y - screenY1 + sprites[BUMPER_2_NORMAL].gfx->h - 1);
-						sprites[BUMPER_2_NORMAL].flags = Sprite::FLAG_DRAW|Sprite::FLAG_LAYER1;
-						sprites[BUMPER_2_SQUISH].flags = Sprite::FLAG_NONE|Sprite::FLAG_LAYER1;
+						updateLines(sprites[3].y - screenY1, sprites[3].y - screenY1 + sprites[3].gfx->h - 1);
+						sprites[3].frame = 0;
 					}
 				}
 				for (int i = 0; i < numLights; ++i)
@@ -395,11 +398,11 @@ int main()
 					{
 						if ((sprites[i].flags & Sprite::FLAG_DRAW) != 0 && y + screenY1 >= sprites[i].y && y + screenY1 < sprites[i].y + sprites[i].gfx->h)
 						{
-							const uint8_t *gfx;
+							const uint8_t *gfx = sprites[i].gfx->data + sprites[i].frame * sprites[i].gfx->w * sprites[i].gfx->h;
 							if ((sprites[i].flags & Sprite::FLAG_FLIP) != 0)
-								gfx = sprites[i].gfx->data + (sprites[i].gfx->h - (y + screenY1 - sprites[i].y) - 1) * sprites[i].gfx->w;
+								gfx += (sprites[i].gfx->h - (y + screenY1 - sprites[i].y) - 1) * sprites[i].gfx->w;
 							else
-								gfx = sprites[i].gfx->data + (y + screenY1 - sprites[i].y) * sprites[i].gfx->w;
+								gfx += (y + screenY1 - sprites[i].y) * sprites[i].gfx->w;
 							if ((sprites[i].flags & Sprite::FLAG_MIRROR) != 0)
 							{
 								for (int x = 0; x < sprites[i].gfx->w; ++x)
